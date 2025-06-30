@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Energy Data Dashboard</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <style>
-    body {
+    <meta charset="UTF-8">
+    <title>Energy Data Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
       background-color: #eef2f7;
       font-family: 'Segoe UI', Tahoma, sans-serif;
     }
     .container {
-      margin-top: 50px;
+      max-width: 700px;
+      margin: 40px auto;
       padding: 30px;
       background-color: white;
       border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -30,12 +31,31 @@
       height: auto;
       margin-top: 20px;
     }
-  </style>
+
+    p {
+      color: #555;
+      margin-top: 15px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+    </style>
 </head>
 <body>
-  <div class="container text-center">
-    <h2>Energy Capacity Distributions</h2>
-    <img src="{{ url_for('static', filename=graph) }}" alt="Energy Pie Chart">
-  </div>
+    <div class="container text-center">
+        <h2>Energy Capacity Distributions</h2>
+        <img src="{{ url_for('static', filename=graph1) }}" alt="Energy Pie Chart">
+        <h2>Total Capacity by Source</h2>
+        <img src="{{ url_for('static', filename=graph2) }}" alt="Energy Bar Chart">
+        <a href="/">Back to Home</a>
+    </div>
 </body>
 </html>
