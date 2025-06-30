@@ -12,31 +12,36 @@ def home():
 
 @app.route("/energy-data")
 def energy_data():
-    # Step 1: Read the CSV
     df = pd.read_csv('Elctricsity_-capacity-statewise.csv')
-
-    # Step 2: Choose relevant columns
     columns_to_plot = ['coal_cap', 'diesel_cap', 'nuclear_cap','gas_cap','lignite_cap','hydro_cap','res_cap']
     capacities = df[columns_to_plot].sum()
     labels = capacities.index
     values = capacities.values
 
-    # Step 3: Create Pie Chart
+    # Pie Chart
     plt.figure(figsize=(6, 6))
     plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=140)
     plt.title('Energy Capacity Distributions')
     plt.axis('equal')
-
-    # Step 4: Save image to static folder
     os.makedirs('static', exist_ok=True)
     plt.savefig('static/energy_pie_chart.png')
     plt.close()
 
-    # 👇 Add this line to check the actual save location
-    print("Saving chart to:", os.path.abspath('static/energy_pie_chart.png'))
+    # Bar Chart
+    plt.figure(figsize=(8, 5))
+    plt.bar(labels, values, color='teal')
+    plt.title('Total Capacity by Source')
+    plt.xlabel('Source')
+    plt.ylabel('Capacity')
+    plt.tight_layout()
+    plt.savefig('static/energy_bar_chart.png')
+    plt.close()
 
-    # Step 5: Render HTML page
-    return render_template("energy-data.html", graph="energy_pie_chart.png")
+    return render_template(
+        "energy-data.html",
+        graph1="energy_pie_chart.png",
+        graph2="energy_bar_chart.png"
+    )
 
 
 @app.route("/railway-data")
@@ -49,20 +54,44 @@ def railway_data():
     chartxy = df.groupby('Station Code')['Distance'].max().reset_index()
     top_100 = chartxy.sort_values(by='Distance', ascending=False).head(100)
 
-    # Plotting
-    plt.figure(figsize=(18, 7))
+    # Plot 1: Top 100 Stations by Maximum Distance
+    plt.figure(figsize=(14, 7))
     plt.plot(top_100['Station Code'], top_100['Distance'], color='navy')
     plt.xlabel('Station Code')
     plt.ylabel('Maximum Distance (km)')
     plt.title('Top 100 Stations by Maximum Distance')
     plt.xticks(rotation=90)
     plt.tight_layout()
-    os.makedirs('static', exist_ok=True)
-    plt.savefig('static/railway_chart.png')
+    plt.savefig('static/railway_chart1.png')
     plt.close()
 
-    print("Saving chart to:", os.path.abspath('static/railway_chart.png'))
-    return render_template("railway-data.html", graph="railway_chart.png")
+    # Plot 2: Histogram of All Distances
+    plt.figure(figsize=(10, 6))
+    plt.hist(df['Distance'].dropna(), bins=30, color='orange', edgecolor='black')
+    plt.xlabel('Distance (km)')
+    plt.ylabel('Frequency')
+    plt.title('Distribution of Train Distances')
+    plt.tight_layout()
+    plt.savefig('static/railway_chart2.png')
+    plt.close()
+
+    # Plot 3: Number of Trains per Station (Top 20)
+    train_counts = df['Station Code'].value_counts().head(20)
+    plt.figure(figsize=(12, 6))
+    train_counts.plot(kind='bar', color='green')
+    plt.xlabel('Station Code')
+    plt.ylabel('Number of Trains')
+    plt.title('Top 20 Stations by Number of Trains')
+    plt.tight_layout()
+    plt.savefig('static/railway_chart3.png')
+    plt.close()
+
+    return render_template(
+        "railway-data.html",
+        graph1="railway_chart1.png",
+        graph2="railway_chart2.png",
+        graph3="railway_chart3.png"
+    )
 
 '''/* @app.route("/study-data")
 def study_data():
@@ -79,9 +108,8 @@ def study_data():
 def health_data():
     df = pd.read_csv('WHO-COVID-19-global-daily-data.csv')
     df_sampled_100 = df.sample(n=100, random_state=42)
-    max_new_cases_row = df_sampled_100.loc[df_sampled_100['New_cases'].idxmax()]
 
-    # Plot New_cases vs Country for the sample
+    # Bar Chart: New Cases per Country
     plt.figure(figsize=(20, 8))
     plt.bar(df_sampled_100['Country'], df_sampled_100['New_cases'], color='skyblue')
     plt.xlabel('Country')
@@ -92,44 +120,66 @@ def health_data():
     os.makedirs('static', exist_ok=True)
     plt.savefig('static/health_chart.png')
     plt.close()
-    print("Saving chart to:", os.path.abspath('static/health_chart.png'))
-    return render_template("health-data.html", graph="health_chart.png")
+
+    # Line Chart: Cumulative Cases (for first 50 rows)
+    df_sampled_50 = df.sample(n=50, random_state=42)
+    plt.figure(figsize=(10, 5))
+    plt.plot(df_sampled_50['Date_reported'], df_sampled_50['Cumulative_cases'], color='red')
+    plt.xlabel('Date')
+    plt.ylabel('Cumulative Cases')
+    plt.title('Cumulative Cases Over Time (Sample)')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.savefig('static/health_line_chart.png')
+    plt.close()
+
+    return render_template(
+        "health-data.html",
+        graph1="health_chart.png",
+        graph2="health_line_chart.png"
+    )
 
 @app.route("/wind-data")
 def wind_data():
-    # Read the file in chunks
     chunk_iter = pd.read_csv('wind_file2012.csv', chunksize=100000, low_memory=True)
     for chunk in chunk_iter:
         df = chunk.copy()
-        break  # Only process the first chunk
+        break
 
-    # Clean column names
     df.columns = df.columns.str.strip()
-
-    # Convert WindSpeed to numeric (if not already)
     df['uwnd'] = pd.to_numeric(df['uwnd'], errors='coerce')
 
-    # Example: Histogram of Wind Speed
+    # Histogram
     plt.figure(figsize=(10, 5))
     plt.hist(df['uwnd'].dropna(), bins=30, color='skyblue', edgecolor='black')
     plt.xlabel('Wind Speed (m/s)')
     plt.ylabel('Frequency')
     plt.title('Distribution of Wind Speed (First Chunk)')
     plt.tight_layout()
-
-    # Save the plot to static folder
     os.makedirs('static', exist_ok=True)
     plt.savefig('static/wind_chart.png')
     plt.close()
 
-    print("Saving chart to:", os.path.abspath('static/wind_chart.png'))
-    return render_template("wind-data.html", graph="wind_chart.png")
+    # Boxplot
+    plt.figure(figsize=(6, 5))
+    plt.boxplot(df['uwnd'].dropna())
+    plt.title('Wind Speed Boxplot')
+    plt.ylabel('Wind Speed (m/s)')
+    plt.tight_layout()
+    plt.savefig('static/wind_boxplot.png')
+    plt.close()
+
+    return render_template(
+        "wind-data.html",
+        graph1="wind_chart.png",
+        graph2="wind_boxplot.png"
+    )
+
 
 
 @app.route("/Platform_info")
 def platform_info():
     return render_template("Platform_info.html")
-
 
 if __name__ == "__main__":
     app.run(debug=True)
