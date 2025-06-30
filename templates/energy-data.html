@@ -32,6 +32,11 @@
       margin-top: 20px;
     }
 
+            .desc {
+      color: #444;
+      margin-bottom: 30px;
+    }
+
     p {
       color: #555;
       margin-top: 15px;
@@ -53,8 +58,18 @@
     <div class="container text-center">
         <h2>Energy Capacity Distributions</h2>
         <img src="{{ url_for('static', filename=graph1) }}" alt="Energy Pie Chart">
+         <div class="desc">
+            <p>
+                This pie chart shows the proportion of total installed energy capacity in India by source. It highlights how much each energy source (such as coal, diesel, nuclear, gas, lignite, hydro, and renewable energy) contributes to the overall energy mix. From the chart, it is clear that coal is the dominant source, followed by renewable energy and hydro power.
+            </p>
+        </div>
         <h2>Total Capacity by Source</h2>
         <img src="{{ url_for('static', filename=graph2) }}" alt="Energy Bar Chart">
+         <div class="desc">
+            <p>
+                This bar chart displays the absolute capacity (in megawatts) for each energy source. It allows for easy comparison of the actual installed capacity of each type. Coal has the highest installed capacity, while sources like lignite and gas have much smaller contributions.
+            </p>
+        </div>
         <a href="/">Back to Home</a>
     </div>
 </body>
