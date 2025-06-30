@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IntelligentReach - Platform</title>
-   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
@@ -17,6 +17,7 @@
       <ul class=" nav-list" id="menuBar">
         <li><a href="{{ url_for('platform_info') }}">Platform  info</a></li>
         <li class="dropdown">
+  <a href="#">Analysis The Data</a>
       <ul class="dropdown-menu">
     <li><a href="/railway-data">Railway Data</a></li>
     <li><a href="/energy-data">Energy Data</a></li>
@@ -45,7 +46,7 @@
         </section>
       </div>
       <div class="right">
-        <img src="data_anlysis.webp" id="hoverImage" alt="Demo Section" />
+          <img src="{{ url_for('static', filename='data_anlysis.webp') }}" alt="data_anlysis.webp" width="300">
         <div id="hoverResponse">Hey! Project of ADRDE Data Analytic 🎯</div>
 
         <div class="demo-box" id="demoBox">
@@ -118,6 +119,6 @@
     });
   </script>
  
-  <script src="script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
