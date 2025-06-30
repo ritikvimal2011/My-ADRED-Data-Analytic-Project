@@ -125,9 +125,9 @@ def wind_data():
     print("Saving chart to:", os.path.abspath('static/wind_chart.png'))
     return render_template("wind-data.html", graph="wind_chart.png")
 
-@app.route("/about")
+@app.route("/Platform_info")
 def about():
-    return render_template("about.html")
+    return render_template("Platform_info.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
