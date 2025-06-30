@@ -126,7 +126,7 @@ def wind_data():
     return render_template("wind-data.html", graph="wind_chart.png")
 
 
-@app.route("/Platform_info.")
+@app.route("/Platform_info")
 def platform_info():
     return render_template("Platform_info.html")
 
