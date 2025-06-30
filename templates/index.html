@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IntelligentReach - Platform</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-
 </head>
 <body>
   <header>
@@ -18,8 +15,8 @@
       <div class="logo">Virtualizationof<span>Data</span></div>  
       <div class="hamburger" id="hamburger">&#9776;</div>     
       <ul class=" nav-list" id="menuBar">
-         <li><a href="{{ url_for('platform_info') }}">Platform  info</a></li>
-  <a href="#">Analysis The Data</a>
+        <li><a href="{{ url_for('platform_info') }}">Platform  info</a></li>
+        <li class="dropdown">
       <ul class="dropdown-menu">
     <li><a href="/railway-data">Railway Data</a></li>
     <li><a href="/energy-data">Energy Data</a></li>
@@ -48,7 +45,7 @@
         </section>
       </div>
       <div class="right">
-       <img src="{{ url_for('static', filename='data_anlysis.webp') }}" alt="data_anlysis.webp" width="300">
+        <img src="data_anlysis.webp" id="hoverImage" alt="Demo Section" />
         <div id="hoverResponse">Hey! Project of ADRDE Data Analytic 🎯</div>
 
         <div class="demo-box" id="demoBox">
@@ -80,7 +77,6 @@
     </div>
   </div>
 </section>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
 <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="9YishUOIsUPFgODZbUIwc";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
@@ -121,6 +117,7 @@
       }
     });
   </script>
-       <script src="{{ url_for('static', filename='script.js') }}"></script>
+ 
+  <script src="script.js"></script>
 </body>
 </html>
